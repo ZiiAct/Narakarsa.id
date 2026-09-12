@@ -1,0 +1,119 @@
+.footer {
+  background: var(--color-bg-dark);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: var(--space-3xl) 0 var(--space-xl);
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--space-2xl);
+  margin-bottom: var(--space-2xl);
+}
+
+/* Brand column */
+.footer__brand { }
+
+.footer__brand-logos {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: var(--space-sm);
+}
+
+.footer__brand-logo-img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+  /* Show original logo colors */
+}
+
+/* Narakarsa kabinet logo gets a white box to distinguish it */
+.footer__brand-logo-img--kabinet {
+  background: white;
+  border-radius: 8px;
+  padding: 3px 5px;
+  height: 36px;
+}
+
+.footer__brand-name {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--space-md);
+}
+
+.footer__brand-line1 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+}
+
+.footer__brand-line2 {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+}
+
+.footer__brand-desc {
+  color: rgba(255,255,255,0.45);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  max-width: 300px;
+}
+
+/* Nav columns */
+.footer__col-title {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: var(--space-lg);
+}
+
+.footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer__link {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.87rem;
+  transition: color var(--transition-fast);
+  cursor: pointer;
+}
+
+a.footer__link:hover { color: white; }
+
+/* Divider + Bottom */
+.footer__divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  margin-bottom: var(--space-lg);
+}
+
+.footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.footer__copy {
+  color: rgba(255,255,255,0.28);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 768px) {
+  .footer__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+  .footer__bottom {
+    flex-direction: column;
+    gap: var(--space-sm);
+    text-align: center;
+  }
+}
