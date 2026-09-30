@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import imgSaintek  from '../../assets/saintek.webp'
-import imgWA0065   from '../../assets/IMG-20260802-WA0065.jpg'
 import imgWA0074   from '../../assets/IMG-20260802-WA0074.jpg'
-import imgWA0089   from '../../assets/IMG-20260803-WA0089.jpg'
-import imgWA0113   from '../../assets/IMG-20260803-WA0113.jpg'
+import { getUpdates } from '../../firebase/firestore'
 import './Homepage.css'
 
 // ── Data ────────────────────────────────────────────────────
@@ -46,29 +45,25 @@ const misiItems = [
   'Memastikan kesejahteraan mahasiswa yang inklusif dan merata',
 ]
 
-const newsItems = [
-  {
-    id: 1, tag: 'Kegiatan',
-    title: 'Pelantikan Resmi Kabinet Narakarsa DEMA FST',
-    img:   imgWA0065,
-    date:  '2 Agustus 2026',
-  },
-  {
-    id: 2, tag: 'Berita',
-    title: 'Rapat Koordinasi Perdana Pengurus Kabinet Narakarsa',
-    img:   imgWA0089,
-    date:  '3 Agustus 2026',
-  },
-  {
-    id: 3, tag: 'Pengumuman',
-    title: 'Sosialisasi Program Kerja Semester Ganjil 2026/2027',
-    img:   imgWA0113,
-    date:  '3 Agustus 2026',
-  },
-]
 
 // ── Component ────────────────────────────────────────────────
 export default function Homepage() {
+  const [newsItems, setNewsItems] = useState([])
+  const [newsLoading, setNewsLoading] = useState(true)
+
+  useEffect(() => {
+    getUpdates(3)
+      .then(data => setNewsItems(data))
+      .catch(err => console.error('Gagal memuat berita homepage:', err))
+      .finally(() => setNewsLoading(false))
+  }, [])
+
+  const formatDate = (createdAt, fallback) => {
+    if (!createdAt) return fallback || '—'
+    const date = createdAt?.toDate ? createdAt.toDate() : new Date(createdAt)
+    return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+  }
+
   return (
     <div className="page-wrapper" style={{ paddingTop: 72 }}>
 
@@ -227,22 +222,40 @@ export default function Homepage() {
             </Link>
           </div>
 
+          {/* ── News Grid ── */}
           <div className="updates__grid" role="list">
-            {newsItems.map(item => (
-              <article key={item.id} className="updates__card" role="listitem" aria-label={item.title}>
-                <img
-                  src={item.img}
-                  alt={item.title}
-                  className="updates__card-img"
-                  loading="lazy"
-                />
-                <div className="updates__card-body">
-                  <span className="updates__card-tag">{item.tag}</span>
-                  <h3 className="updates__card-title">{item.title}</h3>
-                  <p className="updates__card-date">{item.date}</p>
-                </div>
-              </article>
-            ))}
+            {newsLoading ? (
+              <p style={{ color: 'var(--color-text-muted)', gridColumn: '1/-1' }}>Memuat berita...</p>
+            ) : newsItems.length === 0 ? (
+              <p style={{ color: 'var(--color-text-muted)', gridColumn: '1/-1' }}>Belum ada berita.</p>
+            ) : (
+              newsItems.map(item => (
+                <Link
+                  key={item.id}
+                  to={`/d-update/${item.id}`}
+                  className="updates__card"
+                  role="listitem"
+                  aria-label={item.title}
+                  id={`home-news-${item.id}`}
+                >
+                  {item.imageUrl && (
+                    <img
+                      src={item.imageUrl}
+                      alt={item.title}
+                      className="updates__card-img"
+                      loading="lazy"
+                    />
+                  )}
+                  <div className="updates__card-body">
+                    <span className="updates__card-tag">{item.tag}</span>
+                    <h3 className="updates__card-title">{item.title}</h3>
+                    <p className="updates__card-date">
+                      {formatDate(item.createdAt, item.dateStr)}
+                    </p>
+                  </div>
+                </Link>
+              ))
+            )}
           </div>
         </div>
       </section>

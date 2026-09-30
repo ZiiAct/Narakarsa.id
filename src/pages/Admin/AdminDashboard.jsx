@@ -16,7 +16,7 @@ export default function AdminDashboard() {
   const [msgLoading, setMsgLoading] = useState(true)
 
   // Form state — Tambah Update
-  const [form, setForm]         = useState({ tag: '', title: '', desc: '' })
+  const [form, setForm]         = useState({ tag: '', title: '', desc: '', content: '' })
   const [imageFile, setImageFile] = useState(null)
   const [uploadProgress, setUploadProgress] = useState(0)
   const [saving, setSaving]     = useState(false)
@@ -202,14 +202,26 @@ export default function AdminDashboard() {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="update-desc">Deskripsi</label>
+              <label htmlFor="update-desc">Deskripsi Singkat</label>
               <textarea
                 id="update-desc"
                 name="desc"
-                placeholder="Deskripsi singkat artikel..."
+                placeholder="Deskripsi singkat artikel (tampil di card)..."
                 value={form.desc}
                 onChange={handleFormChange}
                 required
+                style={{ minHeight: 100 }}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="update-content">Isi Artikel (Konten Penuh)</label>
+              <textarea
+                id="update-content"
+                name="content"
+                placeholder="Tulis isi artikel lengkap di sini. Pisahkan paragraf dengan baris kosong..."
+                value={form.content}
+                onChange={handleFormChange}
+                style={{ minHeight: 260 }}
               />
             </div>
             <div className="form-group">

@@ -408,11 +408,15 @@
   border-radius: var(--radius-lg);
   overflow: hidden;
   transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  display: block;
+  text-decoration: none;
+  color: inherit;
 }
 
 .updates__card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-md);
+  border-color: var(--color-primary-light);
 }
 
 .updates__card-img {

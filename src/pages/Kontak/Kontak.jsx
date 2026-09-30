@@ -4,10 +4,10 @@ import './Kontak.css'
 
 
 export default function Kontak() {
-  const [form, setForm]       = useState({ nama: '', email: '', subjek: '', pesan: '' })
+  const [form, setForm] = useState({ nama: '', email: '', subjek: '', pesan: '' })
   const [submitted, setSubmitted] = useState(false)
   const [sending, setSending] = useState(false)
-  const [error, setError]     = useState(null)
+  const [error, setError] = useState(null)
 
   const handleChange = e => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
 
@@ -46,10 +46,10 @@ export default function Kontak() {
             {/* ── Info Column ── */}
             <div>
               {[
-                { icon: '📧', label: 'Email', value: 'email@domain.com' },
-                { icon: '📞', label: 'Telepon', value: '+62 xxx-xxxx-xxxx' },
-                { icon: '📍', label: 'Alamat', value: 'Jakarta, Indonesia' },
-                { icon: '🕐', label: 'Jam Kerja', value: 'Senin–Jumat, 09.00–17.00 WIB' },
+                { icon: '📧', label: 'Email', value: 'demafst@uinsgd.ac.id' },
+                { icon: '📞', label: 'Telepon', value: '+62878-2635-1728' },
+                { icon: '📍', label: 'Alamat', value: 'Bandung, Indonesia' },
+                { icon: '🕐', label: 'Jam Aktif', value: 'Senin–Jumat, 09.00–17.00 WIB' },
               ].map(item => (
                 <div key={item.label} className="kontak__info-item">
                   <span className="kontak__info-icon" aria-hidden="true">{item.icon}</span>

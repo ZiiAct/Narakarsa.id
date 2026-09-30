@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom'
-import logoDema      from '../../assets/DEMAFST.png'
+import logoDema from '../../assets/DEMAFST.png'
 import logoNarakarsa from '../../assets/Narakarsa.png'
-import logoKominfo   from '../../assets/Kominfo.png'
+import logoKominfo from '../../assets/Kominfo.png'
 import './Footer.css'
 
 const navLinks = [
-  { label: 'Home',          to: '/'              },
-  { label: 'Profil',        to: '/profil'        },
-  { label: 'D-Update',      to: '/d-update'      },
-  { label: 'Advokasi',      to: '/advokasi'      },
+  { label: 'Home', to: '/' },
+  { label: 'Profil', to: '/profil' },
+  { label: 'D-Update', to: '/d-update' },
+  { label: 'Advokasi', to: '/advokasi' },
   { label: 'Academic Bank', to: '/academic-bank' },
-  { label: 'Hubungi Kami',  to: '/kontak'        },
+  { label: 'Hubungi Kami', to: '/kontak' },
 ]
 
 export default function Footer() {
@@ -24,9 +24,9 @@ export default function Footer() {
           {/* Brand */}
           <div className="footer__brand">
             <div className="footer__brand-logos">
-              <img src={logoDema}      alt="DEMA FST" className="footer__brand-logo-img" />
+              <img src={logoDema} alt="DEMA FST" className="footer__brand-logo-img" />
               <img src={logoNarakarsa} alt="Narakarsa" className="footer__brand-logo-img footer__brand-logo-img--kabinet" />
-              <img src={logoKominfo}   alt="Kominfo" className="footer__brand-logo-img" />
+              <img src={logoKominfo} alt="Kominfo" className="footer__brand-logo-img" />
             </div>
             <div className="footer__brand-name">
               <span className="footer__brand-line1">DEMA FST</span>
@@ -54,8 +54,8 @@ export default function Footer() {
           <div>
             <p className="footer__col-title">Kontak</p>
             <ul className="footer__links" role="list">
-              <li><span className="footer__link">demafst@kampus.ac.id</span></li>
-              <li><span className="footer__link">@demafst_narakarsa</span></li>
+              <li><a href="mailto:demafst@uinsgd.ac.id" className="footer__link">demafst@uinsgd.ac.id</a></li>
+              <li><a href="https://www.instagram.com/demafst_uinsgd" className="footer__link" target="_blank" rel="noopener noreferrer">@demafst_uinsgd</a></li>
               <li><span className="footer__link">Gedung FST, Kampus UIN SGD Bandung</span></li>
             </ul>
           </div>

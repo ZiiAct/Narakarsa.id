@@ -1,28 +1,23 @@
-// src/firebase/config.js
-// ─────────────────────────────────────────────────────────────
-// Inisialisasi Firebase menggunakan environment variables dari .env
-// Pastikan kamu sudah mengisi nilai yang benar di file .env
-// ─────────────────────────────────────────────────────────────
 import { initializeApp } from 'firebase/app'
-import { getFirestore }  from 'firebase/firestore'
-import { getAuth }       from 'firebase/auth'
-import { getStorage }    from 'firebase/storage'
+import { getFirestore } from 'firebase/firestore'
+import { getAuth } from 'firebase/auth'
+import { getStorage } from 'firebase/storage'
 
 const firebaseConfig = {
-  apiKey:            import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain:        import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId:         import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket:     import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId:             import.meta.env.VITE_FIREBASE_APP_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 }
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
 
 // Export service instances
-export const db      = getFirestore(app)  // Firestore database
-export const auth    = getAuth(app)       // Authentication
+export const db = getFirestore(app, 'matanifdb')  // Firestore database (custom: matanifdb)
+export const auth = getAuth(app)       // Authentication
 export const storage = getStorage(app)    // Cloud Storage
 
 export default app

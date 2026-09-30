@@ -1,10 +1,3 @@
-// src/firebase/firestore.js
-// ─────────────────────────────────────────────────────────────
-// Helper functions untuk operasi Firestore (CRUD)
-// Koleksi yang digunakan:
-//   - 'updates'  → artikel / berita untuk halaman D-Update
-//   - 'messages' → pesan masuk dari form Kontak
-// ─────────────────────────────────────────────────────────────
 import {
   collection,
   addDoc,
@@ -18,6 +11,7 @@ import {
   limit,
   serverTimestamp,
   where,
+  Timestamp,
 } from 'firebase/firestore'
 import { db } from './config'
 
@@ -42,7 +36,7 @@ export async function getUpdates(limitCount = 20) {
     limit(limitCount)
   )
   const snapshot = await getDocs(q)
-  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+  return snapshot.docs.map(d => ({ id: d.id, ...d.data() }))
 }
 
 /**
@@ -58,7 +52,7 @@ export async function getUpdateById(id) {
 
 /**
  * Tambah artikel baru
- * @param {{ tag: string, title: string, desc: string, imageUrl?: string }} data
+ * @param {{ tag: string, title: string, desc: string, content?: string, imageUrl?: string }} data
  */
 export async function addUpdate(data) {
   return await addDoc(collection(db, COLLECTIONS.UPDATES), {
@@ -119,7 +113,7 @@ export async function getMessages(onlyUnread = false) {
     )
   }
   const snapshot = await getDocs(q)
-  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+  return snapshot.docs.map(d => ({ id: d.id, ...d.data() }))
 }
 
 /**

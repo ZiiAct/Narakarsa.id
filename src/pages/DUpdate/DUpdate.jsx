@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { getUpdates } from '../../firebase/firestore'
 import './DUpdate.css'
 
@@ -21,6 +22,14 @@ export default function DUpdate() {
     }
     fetchUpdates()
   }, [])
+
+  const formatDate = (createdAt) => {
+    if (!createdAt) return '—'
+    const date = createdAt?.toDate ? createdAt.toDate() : new Date(createdAt)
+    return date.toLocaleDateString('id-ID', {
+      day: 'numeric', month: 'long', year: 'numeric',
+    })
+  }
 
   return (
     <div className="page-wrapper">
@@ -62,11 +71,13 @@ export default function DUpdate() {
           {!loading && !error && updates.length > 0 && (
             <div className="dupdate__grid" role="list">
               {updates.map(item => (
-                <article
+                <Link
                   key={item.id}
+                  to={`/d-update/${item.id}`}
                   className="dupdate__card"
                   role="listitem"
                   aria-label={item.title}
+                  id={`dupdate-card-${item.id}`}
                 >
                   {/* Gambar (opsional) */}
                   {item.imageUrl && (
@@ -81,13 +92,10 @@ export default function DUpdate() {
                   <h2 className="dupdate__card-title">{item.title}</h2>
                   <p className="dupdate__card-desc">{item.desc}</p>
                   <p className="dupdate__card-date">
-                    {item.createdAt?.toDate
-                      ? item.createdAt.toDate().toLocaleDateString('id-ID', {
-                          day: 'numeric', month: 'long', year: 'numeric',
-                        })
-                      : '—'}
+                    {formatDate(item.createdAt)}
                   </p>
-                </article>
+                  <span className="dupdate__card-read-more">Baca selengkapnya →</span>
+                </Link>
               ))}
             </div>
           )}

@@ -5,6 +5,7 @@ import Footer        from './components/Footer/Footer'
 import Homepage      from './pages/Homepage/Homepage'
 import Profil        from './pages/Profil/Profil'
 import DUpdate       from './pages/DUpdate/DUpdate'
+import ArticleDetail from './pages/ArticleDetail/ArticleDetail'
 import Advokasi      from './pages/Advokasi/Advokasi'
 import Kontak        from './pages/Kontak/Kontak'
 import AcademicBank  from './pages/AcademicBank/AcademicBank'
@@ -21,7 +22,8 @@ function App() {
           <Routes>
             <Route path="/"               element={<Homepage />} />
             <Route path="/profil"         element={<Profil />} />
-            <Route path="/d-update"       element={<DUpdate />} />
+            <Route path="/d-update"        element={<DUpdate />} />
+            <Route path="/d-update/:id"     element={<ArticleDetail />} />
             <Route path="/advokasi"       element={<Advokasi />} />
             <Route path="/kontak"         element={<Kontak />} />
             <Route path="/academic-bank"  element={<AcademicBank />} />
