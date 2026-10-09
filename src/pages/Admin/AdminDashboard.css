@@ -1,7 +1,11 @@
 .admin-dash {
   min-height: 100vh;
   padding: 90px var(--space-xl) var(--space-2xl);
+<<<<<<< HEAD
+  max-width: 1180px;
+=======
   max-width: 1100px;
+>>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
   margin: 0 auto;
 }
 
@@ -40,10 +44,21 @@
   display: flex;
   gap: var(--space-sm);
   margin-bottom: var(--space-2xl);
+<<<<<<< HEAD
+  flex-wrap: wrap;
+}
+
+.admin-dash__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.55rem 1.35rem;
+=======
 }
 
 .admin-dash__tab {
   padding: 0.5rem 1.25rem;
+>>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
   border-radius: var(--radius-full);
   font-size: 0.875rem;
   font-weight: 600;
@@ -60,6 +75,23 @@
   border-color: transparent;
 }
 
+<<<<<<< HEAD
+.admin-dash__badge-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: #ef4444;
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+=======
+>>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
 /* ── Panel ── */
 .admin-dash__panel {
   background: var(--gradient-card);
@@ -70,12 +102,533 @@
 
 .admin-dash__panel-title {
   font-family: var(--font-heading);
+<<<<<<< HEAD
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+/* ════════════════════════════════════════════════════════════
+   TAB PENGADUAN MASUK (UC-03 & UC-04)
+   ════════════════════════════════════════════════════════════ */
+
+.admin-pengaduan__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.admin-btn-csv {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.6rem 1.25rem;
+  background: #10b981;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.admin-btn-csv:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.admin-btn-csv:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-pengaduan__toolbar {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.admin-pengaduan__search {
+  flex: 1;
+  min-width: 240px;
+  position: relative;
+}
+
+.admin-pengaduan__search input {
+  width: 100%;
+  padding: 0.65rem 2.2rem 0.65rem 1rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  font-size: 0.875rem;
+  outline: none;
+  font-family: var(--font-body);
+}
+
+.admin-pengaduan__search input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(27,79,114,0.1);
+}
+
+.admin-pengaduan__search-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-subtle);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.admin-pengaduan__filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-pengaduan__filter label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.admin-pengaduan__filter select {
+  padding: 0.65rem 1rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text);
+  outline: none;
+  cursor: pointer;
+}
+
+.admin-pengaduan__empty {
+  padding: var(--space-3xl) var(--space-xl);
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+.admin-pengaduan__error-box {
+  padding: var(--space-2xl);
+  text-align: center;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #f87171;
+  border-radius: var(--radius-md);
+}
+
+/* ── Tabel Pengaduan ── */
+.admin-table-container {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-card);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  text-align: left;
+}
+
+.admin-table th {
+  background: var(--color-bg-surface);
+  color: var(--color-text-muted);
+  font-weight: 600;
+  padding: 0.85rem 1rem;
+  border-bottom: 1.5px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.admin-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--color-border-light);
+  vertical-align: middle;
+}
+
+.admin-table__row {
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.admin-table__row:hover {
+  background: rgba(46, 134, 193, 0.05);
+}
+
+.admin-kode-badge {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--color-primary);
+  background: var(--color-bg-surface);
+  padding: 3px 7px;
+  border-radius: 4px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.admin-td-date {
+  white-space: nowrap;
+  font-size: 0.8rem;
+  color: var(--color-text-subtle);
+}
+
+.admin-td-nama strong {
+  display: block;
+  color: var(--color-text);
+}
+
+.admin-td-sub {
+  display: block;
+  font-size: 0.775rem;
+  color: var(--color-text-subtle);
+}
+
+.admin-kategori-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #f1f5f9;
+  color: #475569;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.admin-td-pokok {
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+}
+
+/* Status Pills */
+.admin-status-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.admin-status-pill--baru {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
+.admin-status-pill--sedang-diproses {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #fde68a;
+}
+
+.admin-status-pill--selesai {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.admin-btn-detail {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-primary-light);
+  white-space: nowrap;
+  transition: color var(--transition-fast);
+}
+
+.admin-btn-detail:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* ════════════════════════════════════════════════════════════
+   MODAL DETAIL PENGADUAN (UC-03)
+   ════════════════════════════════════════════════════════════ */
+.admin-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+}
+
+.admin-modal-box {
+  background: var(--color-bg-card);
+  width: 100%;
+  max-width: 780px;
+  max-height: 90vh;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalIn 0.2s ease-out;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.admin-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--space-xl);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg-surface);
+}
+
+.admin-modal-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary-light);
+}
+
+.admin-modal-title {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-top: 2px;
+}
+
+.admin-modal-date {
+  font-size: 0.8rem;
+  color: var(--color-text-subtle);
+}
+
+.admin-modal-close {
+  font-size: 1.25rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  transition: all var(--transition-fast);
+}
+
+.admin-modal-close:hover {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.admin-modal-body {
+  padding: var(--space-xl);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+/* Status Change Bar inside modal */
+.admin-modal-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.status-bar-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-right: 8px;
+}
+
+.status-bar-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-bar-select-wrap label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.status-bar-select-wrap select {
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--color-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: white;
+  color: var(--color-primary);
+  outline: none;
+}
+
+.status-saving-spinner {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* Quick Contact buttons */
+.admin-modal-contact-row {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.admin-btn-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #25d366;
+  color: white !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.55rem 1.25rem;
+  border-radius: var(--radius-full);
+  transition: background var(--transition-fast);
+}
+
+.admin-btn-wa:hover {
+  background: #1eb757;
+}
+
+.admin-btn-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-primary);
+  color: white !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.55rem 1.25rem;
+  border-radius: var(--radius-full);
+  transition: background var(--transition-fast);
+}
+
+.admin-btn-email:hover {
+  background: var(--color-primary-light);
+}
+
+/* Modal sections */
+.admin-modal-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  border-top: 1px solid var(--color-border-light);
+  padding-top: var(--space-lg);
+}
+
+.admin-modal-section:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.admin-modal-section-title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-md);
+}
+
+.admin-detail-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.detail-label {
+  display: block;
+  font-size: 0.775rem;
+  font-weight: 600;
+  color: var(--color-text-subtle);
+  margin-bottom: 2px;
+}
+
+.detail-val {
+  font-size: 0.9rem;
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.detail-kronologi-box {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--color-text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.admin-link-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-link-item {
+  color: var(--color-primary-light);
+  font-size: 0.85rem;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.admin-link-item:hover {
+  color: var(--color-primary);
+}
+
+.admin-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-lg) var(--space-xl);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg-surface);
+}
+
+/* ════════════════════════════════════════════════════════════
+   TAB PESAN MASUK & TAMBAH UPDATE (Tetap ada)
+   ════════════════════════════════════════════════════════════ */
+=======
   font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: var(--space-xl);
 }
 
 /* ── Message List ── */
+>>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
 .admin-msg-list { display: flex; flex-direction: column; gap: var(--space-md); }
 
 .admin-msg-item {
@@ -102,7 +655,11 @@
 .admin-msg-subj  { font-size: 0.85rem; font-weight: 600; color: var(--color-text-muted); margin-bottom: var(--space-xs); }
 .admin-msg-body  { font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6; }
 
+<<<<<<< HEAD
+/* Add Update Form */
+=======
 /* ── Add Update Form ── */
+>>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
 .admin-add-form { display: flex; flex-direction: column; gap: var(--space-lg); }
 .admin-add-form .form-group { margin-bottom: 0; }
 
@@ -120,7 +677,11 @@
 
 .admin-add-submit:disabled { opacity: 0.65; }
 
+<<<<<<< HEAD
+/* Upload Progress */
+=======
 /* ── Upload Progress ── */
+>>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
 .upload-progress {
   height: 6px;
   background: var(--color-bg-surface);

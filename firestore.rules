@@ -1,0 +1,86 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: memeriksa apakah pengguna terautentikasi dan merupakan pengurus KASTRAD
+    function isKastrad() {
+      return request.auth != null && (
+        request.auth.token.email in [
+          'kastrad.demafst@uinsgd.ac.id',
+          'hasbi@gmail.com',
+          'admin@narakarsa.id',
+          'demafst@uinsgd.ac.id'
+        ]
+      );
+    }
+
+    // ── Koleksi Pengaduan Advokasi KASTRAD ──────────────────────
+    match /pengaduan/{kodeKasus} {
+      // UC-01: Siapa pun (tamu) boleh mengirim pengaduan jika seluruh field valid
+      allow create: if 
+        // Field wajib harus ada
+        request.resource.data.keys().hasAll([
+          'kodeKasus', 'nama', 'email', 'telepon', 'statusPelapor',
+          'kategori', 'pokok', 'kronologi', 'status', 'createdAt'
+        ])
+        // Batasan field wajib
+        && request.resource.data.nama is string 
+        && request.resource.data.nama.size() > 0 
+        && request.resource.data.nama.size() <= 100
+        && request.resource.data.email is string 
+        && request.resource.data.email.matches('.*@.*\\..*')
+        && request.resource.data.telepon is string 
+        && request.resource.data.telepon.size() >= 9 
+        && request.resource.data.telepon.size() <= 15
+        && request.resource.data.statusPelapor in ['Individu', 'Perwakilan kelompok']
+        && request.resource.data.kategori in [
+          'Akademik dan pembelajaran',
+          'Pelayanan dan administrasi',
+          'Fasilitas dan sarana prasarana',
+          'Kebijakan fakultas',
+          'Hak dan kepentingan mahasiswa',
+          'Kemahasiswaan dan kelembagaan',
+          'Aspirasi peningkatan kualitas',
+          'Lainnya'
+        ]
+        && request.resource.data.pokok is string 
+        && request.resource.data.pokok.size() > 0 
+        && request.resource.data.pokok.size() <= 150
+        && request.resource.data.kronologi is string 
+        && request.resource.data.kronologi.size() >= 50 
+        && request.resource.data.kronologi.size() <= 3000
+        // Status awal harus "Baru"
+        && request.resource.data.status == 'Baru'
+        // ID dokumen harus sama dengan kodeKasus
+        && request.resource.id == request.resource.data.kodeKasus;
+
+      // UC-03: Hanya akun KASTRAD yang boleh membaca pengaduan
+      allow read: if isKastrad();
+
+      // UC-03: Akun KASTRAD hanya boleh mengubah field status dan updatedAt
+      allow update: if isKastrad() 
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt'])
+        && request.resource.data.status in ['Baru', 'Sedang diproses', 'Selesai'];
+
+      // Tidak ada yang boleh menghapus dokumen pengaduan (Pasal 55.3)
+      allow delete: if false;
+    }
+
+    // ── Koleksi Pesan Masuk (Kontak) ───────────────────────────
+    match /messages/{messageId} {
+      // Publik boleh mengirim pesan kontak
+      allow create: if request.resource.data.keys().hasAll(['nama', 'email', 'subjek', 'pesan']);
+      // Hanya admin KASTRAD yang boleh membaca dan menandai dibaca
+      allow read, update: if isKastrad();
+      allow delete: if false;
+    }
+
+    // ── Koleksi D-Update (Artikel / Berita) ──────────────────────
+    match /updates/{updateId} {
+      // Publik boleh membaca artikel
+      allow read: if true;
+      // Hanya admin KASTRAD yang boleh menambah, mengubah, atau menghapus artikel
+      allow create, update, delete: if isKastrad();
+    }
+  }
+}
