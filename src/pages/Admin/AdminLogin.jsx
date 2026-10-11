@@ -25,7 +25,7 @@ export default function AdminLogin() {
       await login(email, password)
       navigate('/admin/dashboard', { replace: true })
     } catch (err) {
-      setError('Email atau password salah. Coba lagi.')
+      setError('Password atau email salah. Coba periksa kembali.')
       console.error(err)
     } finally {
       setLoading(false)

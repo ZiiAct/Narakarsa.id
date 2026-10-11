@@ -7,6 +7,8 @@ import Profil        from './pages/Profil/Profil'
 import DUpdate       from './pages/DUpdate/DUpdate'
 import ArticleDetail from './pages/ArticleDetail/ArticleDetail'
 import Advokasi      from './pages/Advokasi/Advokasi'
+import AdvokasiTiket from './pages/Advokasi/AdvokasiTiket'
+import CekProgres    from './pages/Advokasi/CekProgres'
 import Kontak        from './pages/Kontak/Kontak'
 import AcademicBank  from './pages/AcademicBank/AcademicBank'
 import AdminLogin     from './pages/Admin/AdminLogin'
@@ -24,7 +26,9 @@ function App() {
             <Route path="/profil"         element={<Profil />} />
             <Route path="/d-update"        element={<DUpdate />} />
             <Route path="/d-update/:id"     element={<ArticleDetail />} />
-            <Route path="/advokasi"       element={<Advokasi />} />
+            <Route path="/advokasi"             element={<Advokasi />} />
+            <Route path="/advokasi/cek"         element={<CekProgres />} />
+            <Route path="/advokasi/tiket/:kode" element={<AdvokasiTiket />} />
             <Route path="/kontak"         element={<Kontak />} />
             <Route path="/academic-bank"  element={<AcademicBank />} />
             <Route path="/admin"          element={<AdminLogin />} />

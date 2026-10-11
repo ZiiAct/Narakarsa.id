@@ -2,6 +2,7 @@
 // ─────────────────────────────────────────────────────────────
 // Global authentication state menggunakan React Context
 // Wrap di App.jsx agar seluruh komponen bisa akses user & fungsi login/logout
+// Sesuai UC-02: Otorisasi berbasis daftar email pengurus KASTRAD
 // ─────────────────────────────────────────────────────────────
 import { createContext, useContext, useState, useEffect } from 'react'
 import {
@@ -10,6 +11,7 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth'
 import { auth } from '../firebase/config'
+import { isKastradEmail } from '../config/kastrad'
 
 // ── Create Context ───────────────────────────────────────────
 const AuthContext = createContext(null)
@@ -41,10 +43,13 @@ export function AuthProvider({ children }) {
    */
   const logout = () => signOut(auth)
 
+  const isKastrad = !!user && isKastradEmail(user.email)
+
   const value = {
-    user,          // Firebase User object (null jika belum login)
-    isAdmin: !!user, // true jika sudah login
-    loading,       // true saat state auth masih dimuat
+    user,
+    isAdmin: !!user, // Seluruh akun admin yang login di Firebase berstatus admin
+    isKastrad,
+    loading,
     login,
     logout,
   }

@@ -1,51 +1,345 @@
-/* Advokasi page specific styles */
-.advokasi__issues {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-xl);
-  margin-top: var(--space-2xl);
+/* ===================================================
+   Advokasi & Form Pengaduan Styles (UC-01)
+   =================================================== */
+
+.advokasi__hero-actions {
+  display: flex;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+  flex-wrap: wrap;
 }
 
-.advokasi__issue-card {
+/* ── SOP Alur Grid ── */
+.advokasi__alur-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-lg);
+  margin-top: var(--space-3xl);
+}
+
+.advokasi__alur-card {
   background: var(--gradient-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--space-xl);
   position: relative;
-  overflow: hidden;
   transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
-.advokasi__issue-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: var(--gradient-primary);
-}
-
-.advokasi__issue-card:hover {
+.advokasi__alur-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
 }
 
-.advokasi__issue-icon {
-  font-size: 2rem;
-  margin-bottom: var(--space-md);
-}
-
-.advokasi__issue-title {
+.advokasi__alur-num {
+  display: inline-block;
   font-family: var(--font-heading);
-  font-size: 1.1rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-primary-light);
+  margin-bottom: var(--space-sm);
+  opacity: 0.85;
+}
+
+.advokasi__alur-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
   font-weight: 700;
   margin-bottom: var(--space-sm);
+  color: var(--color-text);
 }
 
-.advokasi__issue-desc {
-  font-size: 0.9rem;
+.advokasi__alur-desc {
+  font-size: 0.875rem;
   color: var(--color-text-muted);
   line-height: 1.6;
 }
 
-.section { padding: var(--space-3xl) 0; }
-.section--alt { background: var(--color-bg-card); }
+/* ── Form Section ── */
+.advokasi__form-wrapper {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.advokasi__form-box {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl);
+  box-shadow: var(--shadow-md);
+}
+
+@media (max-width: 640px) {
+  .advokasi__form-box {
+    padding: var(--space-lg);
+  }
+}
+
+.advokasi__form-header {
+  margin-bottom: var(--space-2xl);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.advokasi__form-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-top: var(--space-xs);
+  margin-bottom: var(--space-sm);
+}
+
+.advokasi__form-subtitle {
+  font-size: 0.925rem;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+}
+
+/* ── Sub-section dividers inside form ── */
+.advokasi__form-section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-xs);
+  border-bottom: 2px solid var(--color-border-light);
+}
+
+.advokasi__form-section-title span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* Form Row (2 Kolom) */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-lg);
+}
+
+/* Label & Counters */
+.label-with-counter {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-sm);
+}
+
+.label-with-counter label {
+  margin-bottom: 0;
+}
+
+.char-counter {
+  font-size: 0.75rem;
+  color: var(--color-text-subtle);
+  font-weight: 500;
+}
+
+.char-counter.counter-warning {
+  color: #d97706;
+}
+
+.req {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.opt {
+  color: var(--color-text-subtle);
+  font-weight: normal;
+  font-size: 0.8rem;
+  margin-left: 4px;
+}
+
+.field-hint {
+  display: block;
+  font-size: 0.775rem;
+  color: var(--color-text-subtle);
+  margin-top: var(--space-xs);
+}
+
+.field-error-msg {
+  display: block;
+  font-size: 0.8rem;
+  color: #ef4444;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+/* Input error state */
+.input-error {
+  border-color: #ef4444 !important;
+  background-color: #fffbfa !important;
+}
+
+.input-error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+/* ── Checkbox Pernyataan ── */
+.checkbox-container {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  cursor: pointer;
+  background: var(--color-bg-surface);
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  transition: border-color var(--transition-fast);
+}
+
+.checkbox-container:hover {
+  border-color: var(--color-primary-light);
+}
+
+.checkbox-container input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  accent-color: var(--color-primary);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.checkbox-label-text {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
+/* ── Submit Button ── */
+.advokasi__form-actions {
+  margin-top: var(--space-2xl);
+  text-align: right;
+}
+
+.advokasi__submit-btn {
+  padding: 0.9rem 2.25rem;
+  font-size: 1rem;
+}
+
+.advokasi__submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ── Alert Error ── */
+.advokasi__alert-error {
+  background: #fef2f2;
+  border: 1px solid #f87171;
+  color: #b91c1c;
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  margin-bottom: var(--space-xl);
+}
+
+/* ── Success Card ── */
+.advokasi__success-card {
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-secondary);
+  border-radius: var(--radius-xl);
+  padding: var(--space-3xl) var(--space-2xl);
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.advokasi__success-icon {
+  font-size: 3.5rem;
+  margin-bottom: var(--space-sm);
+}
+
+.advokasi__success-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-top: var(--space-xs);
+  margin-bottom: var(--space-sm);
+}
+
+.advokasi__success-desc {
+  font-size: 0.975rem;
+  color: var(--color-text-muted);
+  max-width: 540px;
+  margin: 0 auto var(--space-2xl);
+  line-height: 1.65;
+}
+
+.advokasi__kode-box {
+  background: var(--color-bg-surface);
+  border: 2px dashed var(--color-primary-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  max-width: 480px;
+  margin: 0 auto var(--space-2xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.advokasi__kode-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--color-text-muted);
+}
+
+.advokasi__kode-val {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 800;
+  color: var(--color-primary);
+  letter-spacing: 0.08em;
+}
+
+.advokasi__btn-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 0.5rem 1.25rem;
+  background: var(--color-bg-card);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.advokasi__btn-copy:hover {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.advokasi__sop-note {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  max-width: 620px;
+  margin: 0 auto;
+  font-size: 0.85rem;
+  color: #166534;
+  line-height: 1.6;
+  text-align: left;
+}

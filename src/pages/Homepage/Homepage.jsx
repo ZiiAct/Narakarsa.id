@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import imgSaintek  from '../../assets/saintek.webp'
-import imgWA0074   from '../../assets/IMG-20260802-WA0074.jpg'
+import imgSaintek from '../../assets/saintek.webp'
+import imgWA0074 from '../../assets/IMG-20260802-WA0074.jpg'
 import { getUpdates } from '../../firebase/firestore'
 import './Homepage.css'
 
@@ -10,31 +10,32 @@ const layanan = [
   {
     id: 1, icon: '♡',
     title: 'Aspirasi & Aduan',
-    desc:  'Sampaikan masalah akademik, fasilitas, atau administrasi — bisa secara anonim.',
+    desc: 'Sampaikan masalah akademik, fasilitas, atau administrasi — bisa secara anonim.',
   },
   {
     id: 2, icon: '◇',
     title: 'Beasiswa & Kompetisi',
-    desc:  'Kurasi beasiswa, lomba, magang, dan peluang volunteer terbaru untuk mahasiswa.',
+    desc: 'Kurasi beasiswa, lomba, magang, dan peluang volunteer terbaru untuk mahasiswa.',
   },
   {
     id: 3, icon: '✦',
     title: 'Kemitraan',
-    desc:  'Ajukan kerja sama, sponsorship, atau media partner bersama DEMA FST.',
+    desc: 'Ajukan kerja sama, sponsorship, atau media partner bersama DEMA FST.',
   },
-  { id: 4, icon: '◈',
+  {
+    id: 4, icon: '◈',
     title: 'Academic Bank',
-    desc:  'Akses jurnal, buku, bahan ajar, dan artikel pengetahuan pilihan untuk mahasiswa FST.',
+    desc: 'Akses jurnal, buku, bahan ajar, dan artikel pengetahuan pilihan untuk mahasiswa FST.',
   },
   {
     id: 5, icon: '✉',
     title: 'Kotak Anonim',
-    desc:  'Sampaikan kritik & saran tanpa identitas — aman, langsung, dan ditindaklanjuti.',
+    desc: 'Sampaikan kritik & saran tanpa identitas — aman, langsung, dan ditindaklanjuti.',
   },
   {
     id: 6, icon: '◷',
     title: 'Kalender Kegiatan',
-    desc:  'Agenda kabinet dan kegiatan mahasiswa FST — selalu terkini.',
+    desc: 'Agenda kabinet dan kegiatan mahasiswa FST — selalu terkini.',
   },
 ]
 
@@ -101,8 +102,8 @@ export default function Homepage() {
 
           <div className="hero__stats" aria-label="Statistik kabinet">
             {[
-              { num: '5+',    label: 'Departemen Aktif'    },
-              { num: '30+',   label: 'Pengurus Terpilih'   },
+              { num: '8', label: 'Departemen Aktif' },
+              { num: '40+', label: 'Pengurus Terpilih' },
               { num: '1000+', label: 'Mahasiswa Terlayani' },
             ].map(s => (
               <div key={s.label}>
