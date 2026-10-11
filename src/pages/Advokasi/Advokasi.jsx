@@ -1,7 +1,7 @@
-<<<<<<< HEAD
 import { useState, useRef } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { KATEGORI_ADVOKASI, STATUS_PELAPOR } from '../../config/kastrad'
-import { submitPengaduan } from '../../firebase/firestore'
+import { submitPengaduan, generateKodeTiket } from '../../firebase/firestore'
 import './Advokasi.css'
 
 // Info alur advokasi sesuai SOP Kastrad
@@ -14,6 +14,7 @@ const alurLangkah = [
 
 export default function Advokasi() {
   const formRef = useRef(null)
+  const navigate = useNavigate()
 
   // Form state
   const [formData, setFormData] = useState({
@@ -38,8 +39,6 @@ export default function Advokasi() {
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(null)
-  const [kodeKasusSukses, setKodeKasusSukses] = useState(null)
-  const [copied, setCopied] = useState(false)
 
   // Tanggal hari ini format YYYY-MM-DD untuk batas maksimal input tanggal
   const todayStr = new Date().toISOString().split('T')[0]
@@ -182,7 +181,7 @@ export default function Advokasi() {
 
     // Honeypot check: jika terisi, pura-pura berhasil tanpa menyimpan ke server
     if (formData.honeypot) {
-      setKodeKasusSukses('ADV-20261009-S7M9')
+      navigate(`/advokasi/tiket/${generateKodeTiket()}`, { state: { baru: true } })
       return
     }
 
@@ -221,86 +220,26 @@ export default function Advokasi() {
       }
 
       const generatedKode = await submitPengaduan(payload)
-      setKodeKasusSukses(generatedKode)
-
-      // Reset form
-      setFormData({
-        nama: '',
-        email: '',
-        telepon: '',
-        statusPelapor: '',
-        kategori: '',
-        pokok: '',
-        kronologi: '',
-        tanggalKejadian: '',
-        tempat: '',
-        pihakTerkait: '',
-        jumlahTerdampak: '',
-        dampak: '',
-        harapan: '',
-        linkBukti: '',
-        pernyataan: false,
-        honeypot: '',
-      })
-      setErrors({})
+      navigate(`/advokasi/tiket/${generatedKode}`, { state: { baru: true } })
     } catch (err) {
       console.error('Gagal mengirim pengaduan:', err)
       setSubmitError('Gagal mengirim pengaduan. Pastikan koneksi internet aktif dan coba lagi.')
-    } finally {
       setSubmitting(false)
     }
   }
 
-  const handleCopyKode = async () => {
-    if (!kodeKasusSukses) return
-    try {
-      await navigator.clipboard.writeText(kodeKasusSukses)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 3000)
-    } catch {
-      // Fallback copy
-      const ta = document.createElement('textarea')
-      ta.value = kodeKasusSukses
-      document.body.appendChild(ta)
-      ta.select()
-      document.execCommand('copy')
-      document.body.removeChild(ta)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 3000)
-    }
-  }
-
-  const handleResetSuccess = () => {
-    setKodeKasusSukses(null)
-    setCopied(false)
-    setSubmitError(null)
-  }
-
-=======
-import './Advokasi.css'
-
-// Placeholder data — ganti dengan isu advokasi yang sebenarnya
-const issues = [
-  { id: 1, icon: '⚖️', title: 'Isu Advokasi 1', desc: 'Deskripsi singkat tentang isu advokasi pertama yang sedang diperjuangkan.' },
-  { id: 2, icon: '📋', title: 'Isu Advokasi 2', desc: 'Deskripsi singkat tentang isu advokasi kedua yang sedang diperjuangkan.' },
-  { id: 3, icon: '🤝', title: 'Isu Advokasi 3', desc: 'Deskripsi singkat tentang isu advokasi ketiga yang sedang diperjuangkan.' },
-]
-
-export default function Advokasi() {
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
   return (
     <div className="page-wrapper">
 
       {/* ── Page Hero ── */}
       <section className="section" id="advokasi-hero" style={{ paddingTop: 'calc(var(--space-3xl) + 1rem)' }}>
         <div className="container">
-<<<<<<< HEAD
           <span className="section-label">KASTRAD DEMA FST</span>
           <h1 className="section-title">
             Layanan <span className="gradient-text">Advokasi &amp; Aspirasi</span>
           </h1>
           <p className="section-subtitle">
-            Kanal resmi penampungan aspirasi dan pengaduan permasalahan mahasiswa Fakultas Sains dan Teknologi. 
+            Kanal resmi penampungan aspirasi dan pengaduan permasalahan mahasiswa Fakultas Sains dan Teknologi.
             Didukung SOP Advokasi berlandaskan kerahasiaan, keobjektifan, dan akuntabilitas.
           </p>
 
@@ -308,6 +247,9 @@ export default function Advokasi() {
             <button onClick={scrollToForm} className="btn-primary" id="btn-ajukan-pengaduan">
               Ajukan Pengaduan Sekarang ✍️
             </button>
+            <Link to="/advokasi/cek" className="btn-outline" id="btn-cek-progres">
+              Cek Progres Advokasi 🔍
+            </Link>
             <a href="#advokasi-alur" className="btn-outline">
               Alur Advokasi ↓
             </a>
@@ -320,83 +262,18 @@ export default function Advokasi() {
                 <span className="advokasi__alur-num">{langkah.nomor}</span>
                 <h3 className="advokasi__alur-title">{langkah.judul}</h3>
                 <p className="advokasi__alur-desc">{langkah.desc}</p>
-=======
-          <span className="section-label">Perjuangan Kami</span>
-          <h1 className="section-title">
-            <span className="gradient-text">Advokasi</span>
-          </h1>
-          <p className="section-subtitle">
-            Isu-isu yang kami perjuangkan dan langkah-langkah yang kami ambil untuk membuat perubahan nyata.
-          </p>
-
-          {/* Isu Cards */}
-          <div className="advokasi__issues" role="list">
-            {issues.map(issue => (
-              <div key={issue.id} className="advokasi__issue-card" role="listitem" aria-label={issue.title}>
-                <div className="advokasi__issue-icon" aria-hidden="true">{issue.icon}</div>
-                <h2 className="advokasi__issue-title">{issue.title}</h2>
-                <p className="advokasi__issue-desc">{issue.desc}</p>
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
               </div>
             ))}
           </div>
         </div>
       </section>
 
-<<<<<<< HEAD
       {/* ── Section Form Pengaduan ── */}
       <section className="section section--alt" id="form-pengaduan" ref={formRef}>
         <div className="container">
           <div className="advokasi__form-wrapper">
-
-            {kodeKasusSukses ? (
-              /* ── Tampilan Sukses (UC-01) ── */
-              <div className="advokasi__success-card" role="region" aria-label="Bukti Pengaduan">
-                <div className="advokasi__success-icon">✅</div>
-                <span className="section-label" style={{ color: 'var(--color-secondary)' }}>
-                  Laporan Berhasil Terkirim
-                </span>
-                <h2 className="advokasi__success-title">Pengaduan Anda Telah Tercatat</h2>
-                <p className="advokasi__success-desc">
-                  Simpan kode kasus di bawah ini sebagai bukti resmi dan referensi untuk komunikasi dengan tim KASTRAD:
-                </p>
-
-                <div className="advokasi__kode-box">
-                  <span className="advokasi__kode-label">KODE KASUS</span>
-                  <div className="advokasi__kode-val" id="kode-kasus-display">
-                    {kodeKasusSukses}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleCopyKode}
-                    className="advokasi__btn-copy"
-                    id="btn-copy-kode"
-                    aria-label="Salin kode kasus"
-                  >
-                    {copied ? '✓ Tersalin ke Clipboard' : '📋 Salin Kode Kasus'}
-                  </button>
-                </div>
-
-                <div className="advokasi__sop-note">
-                  <p>
-                    <strong>ℹ️ Ketentuan SOP (Pasal 16.5):</strong> Penerimaan formulir pengaduan merupakan bukti awal pencatatan kasus. 
-                    Laporan akan diverifikasi terlebih dahulu oleh tim KASTRAD DEMA FST sebelum diputuskan langkah advokasi selanjutnya.
-                  </p>
-                </div>
-
-                <div style={{ marginTop: 'var(--space-xl)' }}>
-                  <button
-                    type="button"
-                    onClick={handleResetSuccess}
-                    className="btn-outline"
-                  >
-                    ← Kirim Pengaduan Lainnya
-                  </button>
-                </div>
-              </div>
-            ) : (
-              /* ── Formulir Pengaduan (UC-01) ── */
-              <div className="advokasi__form-box">
+            {/* ── Formulir Pengaduan (UC-01) ── */}
+            <div className="advokasi__form-box">
                 <div className="advokasi__form-header">
                   <span className="section-label">Lampiran I SOP Advokasi</span>
                   <h2 className="advokasi__form-title">Formulir Pengaduan Mahasiswa FST</h2>
@@ -412,7 +289,7 @@ export default function Advokasi() {
                 )}
 
                 <form onSubmit={handleSubmit} noValidate aria-label="Formulir Pengaduan Advokasi">
-                  
+
                   {/* Field Jebakan Spam (Honeypot) - Harus Kosong */}
                   <div style={{ display: 'none' }} aria-hidden="true">
                     <label htmlFor="field-honeypot">Jangan isi bidang ini</label>
@@ -722,9 +599,9 @@ export default function Advokasi() {
                       />
                       <span className="checkbox-custom" />
                       <span className="checkbox-label-text">
-                        <strong>Pernyataan Pelapor (Lampiran I SOP Advokasi):</strong> Saya menyatakan 
-                        bahwa data dan kronologi yang saya sampaikan adalah benar dan dapat dipertanggungjawabkan 
-                        sesuai ketentuan yang berlaku, serta bersedia dihubungi oleh tim KASTRAD DEMA FST 
+                        <strong>Pernyataan Pelapor (Lampiran I SOP Advokasi):</strong> Saya menyatakan
+                        bahwa data dan kronologi yang saya sampaikan adalah benar dan dapat dipertanggungjawabkan
+                        sesuai ketentuan yang berlaku, serta bersedia dihubungi oleh tim KASTRAD DEMA FST
                         untuk keperluan klarifikasi dan tindak lanjut advokasi.
                       </span>
                     </label>
@@ -744,19 +621,8 @@ export default function Advokasi() {
                   </div>
                 </form>
               </div>
-            )}
 
           </div>
-=======
-      {/* ── Detail / Dokumen ── */}
-      <section className="section section--alt" id="advokasi-dokumen" aria-label="Dokumen Advokasi">
-        <div className="container">
-          <span className="section-label">Dokumen</span>
-          <h2 className="section-title">Dokumen &amp; Laporan</h2>
-          <p className="section-subtitle">
-            Dokumen, laporan, dan sumber daya terkait advokasi akan ditampilkan di sini.
-          </p>
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
         </div>
       </section>
 

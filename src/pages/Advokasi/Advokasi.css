@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* ===================================================
    Advokasi & Form Pengaduan Styles (UC-01)
    =================================================== */
@@ -19,23 +18,11 @@
 }
 
 .advokasi__alur-card {
-=======
-/* Advokasi page specific styles */
-.advokasi__issues {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-xl);
-  margin-top: var(--space-2xl);
-}
-
-.advokasi__issue-card {
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
   background: var(--gradient-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--space-xl);
   position: relative;
-<<<<<<< HEAD
   transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
@@ -356,42 +343,3 @@
   line-height: 1.6;
   text-align: left;
 }
-=======
-  overflow: hidden;
-  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-}
-
-.advokasi__issue-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: var(--gradient-primary);
-}
-
-.advokasi__issue-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
-
-.advokasi__issue-icon {
-  font-size: 2rem;
-  margin-bottom: var(--space-md);
-}
-
-.advokasi__issue-title {
-  font-family: var(--font-heading);
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: var(--space-sm);
-}
-
-.advokasi__issue-desc {
-  font-size: 0.9rem;
-  color: var(--color-text-muted);
-  line-height: 1.6;
-}
-
-.section { padding: var(--space-3xl) 0; }
-.section--alt { background: var(--color-bg-card); }
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0

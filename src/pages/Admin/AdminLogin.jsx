@@ -25,15 +25,7 @@ export default function AdminLogin() {
       await login(email, password)
       navigate('/admin/dashboard', { replace: true })
     } catch (err) {
-<<<<<<< HEAD
-      if (err.code === 'auth/not-kastrad' || err.message?.includes('KASTRAD')) {
-        setError(err.message || 'Akses ditolak: Akun Anda tidak terdaftar sebagai pengurus KASTRAD.')
-      } else {
-        setError('Email atau password salah. Coba lagi.')
-      }
-=======
-      setError('Email atau password salah. Coba lagi.')
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
+      setError('Password atau email salah. Coba periksa kembali.')
       console.error(err)
     } finally {
       setLoading(false)

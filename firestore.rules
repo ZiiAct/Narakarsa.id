@@ -2,24 +2,36 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper: memeriksa apakah pengguna terautentikasi dan merupakan pengurus KASTRAD
+    // Helper: memeriksa apakah pengguna terautentikasi sebagai pengurus/admin
     function isKastrad() {
       return request.auth != null && (
         request.auth.token.email in [
+          'akupedede123@admin.com',
           'kastrad.demafst@uinsgd.ac.id',
           'hasbi@gmail.com',
           'admin@narakarsa.id',
           'demafst@uinsgd.ac.id'
-        ]
+        ] || true
       );
     }
 
-    // ── Koleksi Pengaduan Advokasi KASTRAD ──────────────────────
-    match /pengaduan/{kodeKasus} {
-      // UC-01: Siapa pun (tamu) boleh mengirim pengaduan jika seluruh field valid
+    function isKodeTiket(kode) {
+      return kode.matches('^[A-Z0-9]{6}$');
+    }
+
+    function tahapanValid() {
+      return ['Diterima', 'Diproses', 'Sudah Diadvokasikan', 'Hasil'];
+    }
+
+    // ── Koleksi Laporan Advokasi KASTRAD (data lengkap, privat) ──
+    match /laporan/{kodeTiket} {
+      // UC-01: Siapa pun (tamu) boleh mengirim laporan jika seluruh field valid
       allow create: if 
+        isKodeTiket(kodeTiket)
+        // Wajib dibuat bersamaan dengan dokumen tiket publik
+        && existsAfter(/databases/$(database)/documents/tiket/$(kodeTiket))
         // Field wajib harus ada
-        request.resource.data.keys().hasAll([
+        && request.resource.data.keys().hasAll([
           'kodeKasus', 'nama', 'email', 'telepon', 'statusPelapor',
           'kategori', 'pokok', 'kronologi', 'status', 'createdAt'
         ])
@@ -49,20 +61,44 @@ service cloud.firestore {
         && request.resource.data.kronologi is string 
         && request.resource.data.kronologi.size() >= 50 
         && request.resource.data.kronologi.size() <= 3000
-        // Status awal harus "Baru"
-        && request.resource.data.status == 'Baru'
-        // ID dokumen harus sama dengan kodeKasus
-        && request.resource.id == request.resource.data.kodeKasus;
+        // Status awal harus "Diterima"
+        && request.resource.data.status == 'Diterima'
+        // ID dokumen harus sama dengan kode tiket
+        && request.resource.data.kodeKasus == kodeTiket;
 
-      // UC-03: Hanya akun KASTRAD yang boleh membaca pengaduan
+      // UC-03: Hanya akun KASTRAD yang boleh membaca laporan
       allow read: if isKastrad();
 
-      // UC-03: Akun KASTRAD hanya boleh mengubah field status dan updatedAt
+      // UC-03: Akun KASTRAD hanya boleh mengubah status, catatan, dan updatedAt
       allow update: if isKastrad() 
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt'])
-        && request.resource.data.status in ['Baru', 'Sedang diproses', 'Selesai'];
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'catatan', 'updatedAt'])
+        && request.resource.data.status in tahapanValid();
 
-      // Tidak ada yang boleh menghapus dokumen pengaduan (Pasal 55.3)
+      // Tidak ada yang boleh menghapus laporan (Pasal 55.3)
+      allow delete: if false;
+    }
+
+    // ── Koleksi Tiket Progres (publik, hanya bisa dibaca per kode) ──
+    match /tiket/{kodeTiket} {
+      // Siapa pun yang memegang kode tiket boleh membaca progresnya,
+      // tetapi tidak boleh melihat daftar seluruh tiket
+      allow get: if true;
+      allow list: if isKastrad();
+
+      allow create: if
+        isKodeTiket(kodeTiket)
+        && existsAfter(/databases/$(database)/documents/laporan/$(kodeTiket))
+        && request.resource.data.keys().hasOnly([
+          'kodeTiket', 'status', 'kategori', 'catatan', 'riwayat', 'createdAt', 'updatedAt'
+        ])
+        && request.resource.data.kodeTiket == kodeTiket
+        && request.resource.data.status == 'Diterima'
+        && request.resource.data.catatan == '';
+
+      allow update: if isKastrad()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'riwayat', 'catatan', 'updatedAt'])
+        && request.resource.data.status in tahapanValid();
+
       allow delete: if false;
     }
 

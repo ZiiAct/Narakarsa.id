@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useState, useEffect, useMemo } from 'react'
 import { useNavigate }         from 'react-router-dom'
 import { useAuth }             from '../../context/AuthContext'
@@ -9,6 +8,7 @@ import {
   getPengaduanList,
   getAllPengaduan,
   updateStatusPengaduan,
+  updateCatatanPengaduan,
 } from '../../firebase/firestore'
 import { uploadImage }         from '../../firebase/storage'
 import {
@@ -20,23 +20,12 @@ import { STATUS_PENGADUAN }    from '../../config/kastrad'
 import './AdminDashboard.css'
 
 const TABS = ['Pengaduan Masuk', 'Pesan Masuk', 'Tambah Update']
-=======
-import { useState, useEffect } from 'react'
-import { useNavigate }         from 'react-router-dom'
-import { useAuth }             from '../../context/AuthContext'
-import { getMessages, markMessageRead, addUpdate } from '../../firebase/firestore'
-import { uploadImage }         from '../../firebase/storage'
-import './AdminDashboard.css'
-
-const TABS = ['Pesan Masuk', 'Tambah Update']
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
 
 export default function AdminDashboard() {
   const { isAdmin, logout, user } = useAuth()
   const navigate = useNavigate()
 
   const [activeTab, setActiveTab]   = useState(0)
-<<<<<<< HEAD
 
   // ── State: Pesan Masuk ──
   const [messages, setMessages]     = useState([])
@@ -57,30 +46,17 @@ export default function AdminDashboard() {
   const [searchQuery, setSearchQuery]           = useState('')
   const [displayLimit, setDisplayLimit]         = useState(50)
   const [selectedPengaduan, setSelectedPengaduan] = useState(null)
-  const [updatingStatus, setUpdatingStatus]     = useState(false)
+  const [catatanInput, setCatatanInput]           = useState('')
+  const [savingCatatan, setSavingCatatan]         = useState(false)
+  const [updatingStatus, setUpdatingStatus]       = useState(false)
   const [downloadingCsv, setDownloadingCsv]     = useState(false)
-=======
-  const [messages, setMessages]     = useState([])
-  const [msgLoading, setMsgLoading] = useState(true)
-
-  // Form state — Tambah Update
-  const [form, setForm]         = useState({ tag: '', title: '', desc: '', content: '' })
-  const [imageFile, setImageFile] = useState(null)
-  const [uploadProgress, setUploadProgress] = useState(0)
-  const [saving, setSaving]     = useState(false)
-  const [saveSuccess, setSaveSuccess] = useState(false)
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
 
   // Redirect jika tidak login
   useEffect(() => {
     if (!isAdmin) navigate('/admin', { replace: true })
   }, [isAdmin, navigate])
 
-<<<<<<< HEAD
   // Load Pesan Masuk
-=======
-  // Load pesan masuk
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
   useEffect(() => {
     async function loadMessages() {
       try {
@@ -92,7 +68,6 @@ export default function AdminDashboard() {
         setMsgLoading(false)
       }
     }
-<<<<<<< HEAD
     if (activeTab === 1) loadMessages()
   }, [activeTab])
 
@@ -155,10 +130,15 @@ export default function AdminDashboard() {
     })
   }, [pengaduanList, filterStatus, searchQuery])
 
-  // Jumlah pengaduan baru
+  // Jumlah pengaduan baru / diterima
   const countBaru = useMemo(() => {
-    return pengaduanList.filter(p => p.status === 'Baru').length
+    return pengaduanList.filter(p => p.status === 'Diterima' || p.status === 'Baru').length
   }, [pengaduanList])
+
+  const openPengaduan = (item) => {
+    setSelectedPengaduan(item)
+    setCatatanInput(item.catatan || '')
+  }
 
   // Ubah status pengaduan (UC-03)
   const handleStatusChange = async (newStatus) => {
@@ -175,6 +155,25 @@ export default function AdminDashboard() {
       alert('Gagal mengubah status. Periksa hak akses Firestore Anda.')
     } finally {
       setUpdatingStatus(false)
+    }
+  }
+
+  // Simpan Catatan / Hasil Advokasi
+  const handleSaveCatatan = async () => {
+    if (!selectedPengaduan) return
+    setSavingCatatan(true)
+    try {
+      await updateCatatanPengaduan(selectedPengaduan.id, catatanInput)
+      setPengaduanList(prev =>
+        prev.map(p => p.id === selectedPengaduan.id ? { ...p, catatan: catatanInput } : p)
+      )
+      setSelectedPengaduan(prev => ({ ...prev, catatan: catatanInput }))
+      alert('Catatan berhasil disimpan dan kini dapat dilihat mahasiswa di Cek Progres.')
+    } catch (err) {
+      console.error('Gagal menyimpan catatan:', err)
+      alert('Gagal menyimpan catatan. Periksa koneksi database Anda.')
+    } finally {
+      setSavingCatatan(false)
     }
   }
 
@@ -197,11 +196,6 @@ export default function AdminDashboard() {
   }
 
   // Pesan masuk handler
-=======
-    if (activeTab === 0) loadMessages()
-  }, [activeTab])
-
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
   const handleMarkRead = async (id) => {
     await markMessageRead(id)
     setMessages(prev =>
@@ -209,10 +203,7 @@ export default function AdminDashboard() {
     )
   }
 
-<<<<<<< HEAD
   // Tambah update form handler
-=======
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
   const handleFormChange = e =>
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
 
@@ -227,11 +218,7 @@ export default function AdminDashboard() {
       }
       await addUpdate({ ...form, imageUrl })
       setSaveSuccess(true)
-<<<<<<< HEAD
       setForm({ tag: '', title: '', desc: '', content: '' })
-=======
-      setForm({ tag: '', title: '', desc: '' })
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
       setImageFile(null)
       setUploadProgress(0)
     } catch (err) {
@@ -249,7 +236,6 @@ export default function AdminDashboard() {
 
   if (!isAdmin) return null
 
-<<<<<<< HEAD
   // Helper WA & Email link
   const getWhatsAppLink = (phone, kodeKasus, nama) => {
     if (!phone) return '#'
@@ -271,22 +257,14 @@ export default function AdminDashboard() {
     return `mailto:${email}?subject=${subj}&body=${body}`
   }
 
-=======
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
   return (
     <div className="admin-dash" id="admin-dashboard">
       {/* ── Header ── */}
       <div className="admin-dash__header">
         <div>
-<<<<<<< HEAD
           <h1 className="admin-dash__title gradient-text">Dashboard KASTRAD</h1>
           <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>
             Login sebagai: <strong>{user?.email}</strong>
-=======
-          <h1 className="admin-dash__title gradient-text">Admin Dashboard</h1>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>
-            Login sebagai: {user?.email}
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
           </p>
         </div>
         <button className="admin-dash__logout" onClick={handleLogout} id="admin-logout">
@@ -306,7 +284,6 @@ export default function AdminDashboard() {
             id={`admin-tab-${i}`}
           >
             {tab}
-<<<<<<< HEAD
             {i === 0 && countBaru > 0 && (
               <span className="admin-dash__badge-count">{countBaru}</span>
             )}
@@ -315,13 +292,10 @@ export default function AdminDashboard() {
                 {messages.filter(m => !m.isRead).length}
               </span>
             )}
-=======
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
           </button>
         ))}
       </div>
 
-<<<<<<< HEAD
       {/* ════════════════════════════════════════════════════════════
           TAB 0: PENGADUAN MASUK (UC-03 & UC-04)
           ════════════════════════════════════════════════════════════ */}
@@ -423,7 +397,7 @@ export default function AdminDashboard() {
                   {filteredPengaduan.map(item => (
                     <tr
                       key={item.id}
-                      onClick={() => setSelectedPengaduan(item)}
+                      onClick={() => openPengaduan(item)}
                       className="admin-table__row"
                     >
                       <td>
@@ -443,8 +417,8 @@ export default function AdminDashboard() {
                         {item.pokok}
                       </td>
                       <td>
-                        <span className={`admin-status-pill admin-status-pill--${(item.status || 'Baru').toLowerCase().replace(/\s+/g, '-')}`}>
-                          {item.status || 'Baru'}
+                        <span className={`admin-status-pill admin-status-pill--${(item.status || 'Diterima').toLowerCase().replace(/\s+/g, '-')}`}>
+                          {item.status || 'Diterima'}
                         </span>
                       </td>
                       <td>
@@ -453,7 +427,7 @@ export default function AdminDashboard() {
                           className="admin-btn-detail"
                           onClick={(e) => {
                             e.stopPropagation()
-                            setSelectedPengaduan(item)
+                            openPengaduan(item)
                           }}
                         >
                           Lihat Detail →
@@ -486,11 +460,6 @@ export default function AdminDashboard() {
           ════════════════════════════════════════════════════════════ */}
       {activeTab === 1 && (
         <div className="admin-dash__panel" role="tabpanel">
-=======
-      {/* ── Tab: Pesan Masuk ── */}
-      {activeTab === 0 && (
-        <div className="admin-dash__panel" role="tabpanel">
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
           <p className="admin-dash__panel-title">
             Pesan Masuk ({messages.filter(m => !m.isRead).length} belum dibaca)
           </p>
@@ -509,13 +478,7 @@ export default function AdminDashboard() {
                     <span className="admin-msg-name">{msg.nama}</span>
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                       <span className="admin-msg-date">
-<<<<<<< HEAD
                         {formatJakartaDateTime(msg.createdAt)}
-=======
-                        {msg.createdAt?.toDate
-                          ? msg.createdAt.toDate().toLocaleDateString('id-ID')
-                          : '—'}
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
                       </span>
                       {!msg.isRead && (
                         <button
@@ -541,15 +504,10 @@ export default function AdminDashboard() {
         </div>
       )}
 
-<<<<<<< HEAD
       {/* ════════════════════════════════════════════════════════════
           TAB 2: TAMBAH UPDATE (Fitur yang sudah ada)
           ════════════════════════════════════════════════════════════ */}
       {activeTab === 2 && (
-=======
-      {/* ── Tab: Tambah Update ── */}
-      {activeTab === 1 && (
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
         <div className="admin-dash__panel" role="tabpanel">
           <p className="admin-dash__panel-title">Tambah Artikel D-Update</p>
 
@@ -637,7 +595,6 @@ export default function AdminDashboard() {
           </form>
         </div>
       )}
-<<<<<<< HEAD
 
       {/* ════════════════════════════════════════════════════════════
           MODAL DETAIL PENGADUAN (UC-03)
@@ -681,15 +638,15 @@ export default function AdminDashboard() {
               <div className="admin-modal-status-bar">
                 <div>
                   <span className="status-bar-label">Status Kasus Saat Ini:</span>
-                  <span className={`admin-status-pill admin-status-pill--${(selectedPengaduan.status || 'Baru').toLowerCase().replace(/\s+/g, '-')}`}>
-                    {selectedPengaduan.status || 'Baru'}
+                  <span className={`admin-status-pill admin-status-pill--${(selectedPengaduan.status || 'Diterima').toLowerCase().replace(/\s+/g, '-')}`}>
+                    {selectedPengaduan.status || 'Diterima'}
                   </span>
                 </div>
                 <div className="status-bar-select-wrap">
                   <label htmlFor="modal-status-select">Ubah Status:</label>
                   <select
                     id="modal-status-select"
-                    value={selectedPengaduan.status || 'Baru'}
+                    value={selectedPengaduan.status || 'Diterima'}
                     onChange={e => handleStatusChange(e.target.value)}
                     disabled={updatingStatus}
                   >
@@ -699,6 +656,32 @@ export default function AdminDashboard() {
                   </select>
                   {updatingStatus && <span className="status-saving-spinner">Menyimpan...</span>}
                 </div>
+              </div>
+
+              {/* Catatan / Hasil Advokasi (Publik di Cek Progres) */}
+              <div className="admin-modal-section" style={{ background: '#f8fafc', padding: 'var(--space-md) var(--space-lg)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-xs)' }}>
+                  <h4 className="admin-modal-section-title" style={{ margin: 0, fontSize: '0.875rem' }}>
+                    Catatan / Hasil Advokasi (Tampil di Cek Progres)
+                  </h4>
+                  <button
+                    type="button"
+                    onClick={handleSaveCatatan}
+                    className="admin-btn-detail"
+                    style={{ background: 'var(--color-primary)', color: 'white', padding: '4px 12px', borderRadius: '4px', border: 'none', cursor: 'pointer' }}
+                    disabled={savingCatatan}
+                  >
+                    {savingCatatan ? 'Menyimpan...' : '💾 Simpan Catatan'}
+                  </button>
+                </div>
+                <textarea
+                  rows={2}
+                  maxLength={2000}
+                  placeholder="Tuliskan catatan progres atau hasil advokasi yang dapat dibaca mahasiswa saat mengecek tiket..."
+                  value={catatanInput}
+                  onChange={e => setCatatanInput(e.target.value)}
+                  style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid var(--color-border)', fontSize: '0.85rem', fontFamily: 'inherit', resize: 'vertical' }}
+                />
               </div>
 
               {/* Quick Contact Buttons */}
@@ -842,8 +825,6 @@ export default function AdminDashboard() {
         </div>
       )}
 
-=======
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
     </div>
   )
 }

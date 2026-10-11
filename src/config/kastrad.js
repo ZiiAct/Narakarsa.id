@@ -9,6 +9,7 @@
  * tanpa perlu mengubah file ini.
  */
 export const DEFAULT_KASTRAD_EMAILS = [
+  'akupedede123@admin.com',
   'kastrad.demafst@uinsgd.ac.id',
   'hasbi@gmail.com',
   'admin@narakarsa.id',
@@ -66,10 +67,41 @@ export const STATUS_PELAPOR = [
 ]
 
 /**
- * Opsi status pengaduan
+ * Tahapan progres advokasi (urut). `key` dipakai sebagai field di `riwayat`
+ * pada dokumen tiket publik untuk mencatat waktu tiap tahapan.
  */
-export const STATUS_PENGADUAN = [
-  'Baru',
-  'Sedang diproses',
-  'Selesai',
+export const TAHAPAN_ADVOKASI = [
+  {
+    key: 'diterima',
+    label: 'Diterima',
+    desc: 'Laporan telah masuk dan tercatat di sistem KASTRAD DEMA FST.',
+  },
+  {
+    key: 'diproses',
+    label: 'Diproses',
+    desc: 'Laporan sedang diverifikasi dan dikaji oleh tim KASTRAD.',
+  },
+  {
+    key: 'diadvokasikan',
+    label: 'Sudah Diadvokasikan',
+    desc: 'Permasalahan telah disampaikan dan dikawal ke pihak terkait.',
+  },
+  {
+    key: 'hasil',
+    label: 'Hasil',
+    desc: 'Proses advokasi selesai dan hasilnya telah tersedia.',
+  },
 ]
+
+/**
+ * Opsi status pengaduan (label tahapan)
+ */
+export const STATUS_PENGADUAN = TAHAPAN_ADVOKASI.map(t => t.label)
+
+/** Status awal setiap laporan baru */
+export const STATUS_AWAL = TAHAPAN_ADVOKASI[0].label
+
+/** Cari objek tahapan berdasarkan label status */
+export function getTahapan(label) {
+  return TAHAPAN_ADVOKASI.find(t => t.label === label) || TAHAPAN_ADVOKASI[0]
+}

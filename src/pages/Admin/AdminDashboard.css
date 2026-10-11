@@ -1,11 +1,7 @@
 .admin-dash {
   min-height: 100vh;
   padding: 90px var(--space-xl) var(--space-2xl);
-<<<<<<< HEAD
   max-width: 1180px;
-=======
-  max-width: 1100px;
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
   margin: 0 auto;
 }
 
@@ -44,7 +40,6 @@
   display: flex;
   gap: var(--space-sm);
   margin-bottom: var(--space-2xl);
-<<<<<<< HEAD
   flex-wrap: wrap;
 }
 
@@ -53,12 +48,6 @@
   align-items: center;
   gap: 8px;
   padding: 0.55rem 1.35rem;
-=======
-}
-
-.admin-dash__tab {
-  padding: 0.5rem 1.25rem;
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
   border-radius: var(--radius-full);
   font-size: 0.875rem;
   font-weight: 600;
@@ -75,7 +64,6 @@
   border-color: transparent;
 }
 
-<<<<<<< HEAD
 .admin-dash__badge-count {
   display: inline-flex;
   align-items: center;
@@ -90,8 +78,6 @@
   font-weight: 700;
 }
 
-=======
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
 /* ── Panel ── */
 .admin-dash__panel {
   background: var(--gradient-card);
@@ -102,7 +88,6 @@
 
 .admin-dash__panel-title {
   font-family: var(--font-heading);
-<<<<<<< HEAD
   font-size: 1.15rem;
   font-weight: 700;
 }
@@ -321,21 +306,30 @@
   white-space: nowrap;
 }
 
-.admin-status-pill--baru {
+.admin-status-pill--baru,
+.admin-status-pill--diterima {
   background: #eff6ff;
-  color: #2563eb;
+  color: #1d4ed8;
   border: 1px solid #bfdbfe;
 }
 
-.admin-status-pill--sedang-diproses {
+.admin-status-pill--sedang-diproses,
+.admin-status-pill--diproses {
   background: #fffbeb;
-  color: #d97706;
+  color: #b45309;
   border: 1px solid #fde68a;
 }
 
-.admin-status-pill--selesai {
+.admin-status-pill--sudah-diadvokasikan {
+  background: #f5f3ff;
+  color: #6d28d9;
+  border: 1px solid #ddd6fe;
+}
+
+.admin-status-pill--selesai,
+.admin-status-pill--hasil {
   background: #f0fdf4;
-  color: #16a34a;
+  color: #15803d;
   border: 1px solid #bbf7d0;
 }
 
@@ -621,14 +615,6 @@
 /* ════════════════════════════════════════════════════════════
    TAB PESAN MASUK & TAMBAH UPDATE (Tetap ada)
    ════════════════════════════════════════════════════════════ */
-=======
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: var(--space-xl);
-}
-
-/* ── Message List ── */
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
 .admin-msg-list { display: flex; flex-direction: column; gap: var(--space-md); }
 
 .admin-msg-item {
@@ -655,11 +641,7 @@
 .admin-msg-subj  { font-size: 0.85rem; font-weight: 600; color: var(--color-text-muted); margin-bottom: var(--space-xs); }
 .admin-msg-body  { font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6; }
 
-<<<<<<< HEAD
 /* Add Update Form */
-=======
-/* ── Add Update Form ── */
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
 .admin-add-form { display: flex; flex-direction: column; gap: var(--space-lg); }
 .admin-add-form .form-group { margin-bottom: 0; }
 
@@ -677,11 +659,7 @@
 
 .admin-add-submit:disabled { opacity: 0.65; }
 
-<<<<<<< HEAD
 /* Upload Progress */
-=======
-/* ── Upload Progress ── */
->>>>>>> a4dbfd84fe0ffd3baad267b62b365a22a1d50fd0
 .upload-progress {
   height: 6px;
   background: var(--color-bg-surface);
