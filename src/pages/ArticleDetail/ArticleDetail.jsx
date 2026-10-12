@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { getUpdateById } from '../../firebase/firestore'
+import { getUpdateById, formatDriveImageUrl } from '../../firebase/firestore'
 import './ArticleDetail.css'
 
 export default function ArticleDetail() {
@@ -29,7 +29,8 @@ export default function ArticleDetail() {
     fetchArticle()
   }, [id])
 
-  const formatDate = (createdAt) => {
+  const formatDate = (createdAt, dateStr) => {
+    if (dateStr) return dateStr
     if (!createdAt) return '—'
     const date = createdAt?.toDate ? createdAt.toDate() : new Date(createdAt)
     return date.toLocaleDateString('id-ID', {
@@ -70,9 +71,14 @@ export default function ArticleDetail() {
       <div className="article-detail__hero">
         {article.imageUrl && (
           <img
-            src={article.imageUrl}
+            src={formatDriveImageUrl(article.imageUrl)}
             alt={article.title}
             className="article-detail__hero-img"
+            referrerPolicy="no-referrer"
+            onError={(e) => {
+              e.target.onerror = null
+              e.target.src = '/images/berita-1.jpg'
+            }}
           />
         )}
         <div className="article-detail__hero-overlay" aria-hidden="true" />
@@ -82,7 +88,7 @@ export default function ArticleDetail() {
           </Link>
           <span className="article-detail__tag">{article.tag || 'Update'}</span>
           <h1 className="article-detail__title">{article.title}</h1>
-          <p className="article-detail__date">{formatDate(article.createdAt)}</p>
+          <p className="article-detail__date">{formatDate(article.createdAt, article.dateStr)}</p>
         </div>
       </div>
 

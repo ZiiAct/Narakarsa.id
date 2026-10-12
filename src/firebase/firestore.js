@@ -1,7 +1,6 @@
 import {
   collection,
   addDoc,
-  setDoc,
   getDocs,
   getDoc,
   updateDoc,
@@ -26,32 +25,162 @@ export const COLLECTIONS = {
 }
 
 // ════════════════════════════════════════════════════════════
-// D-UPDATE — artikel/berita
+// D-UPDATE — artikel/berita & draft resmi
 // ════════════════════════════════════════════════════════════
 
+export const DRAFT_UPDATES = [
+  {
+    id: 'DxnsS3f6ZWTcBf5qLuhiL',
+    title: 'Sosialisasi Program Kerja Semester Ganjil 2026/2027',
+    tag: 'Pengumuman',
+    dateStr: '3 Agustus 2026',
+    desc: 'DEMA FST Kabinet Narakarsa menyelenggarakan sosialisasi program kerja kepada mahasiswa FST agar seluruh sivitas akademika mengetahui agenda dan rencana kegiatan kabinet.',
+    content: 'DEMA FST Kabinet NARAKARSA secara resmi menggelar sosialisasi program kerja untuk Semester Ganjil Tahun Akademik 2026/2027. Kegiatan ini bertujuan untuk memaparkan arah gerak, program unggulan, serta kalender kegiatan selama satu semester ke depan kepada seluruh elemen mahasiswa Fakultas Sains dan Teknologi. Diharapkan melalui transparansi ini, kolaborasi antara DEMA, HMJ, BSO, dan mahasiswa umum dapat terjalin lebih erat demi mewujudkan ekosistem kampus yang intelektual, spiritual, dan kolektif.',
+    imageUrl: '/images/berita-1.jpg',
+    driveUrl: 'https://drive.google.com/file/d/1uhxb5_lLV8RaxGPEaoqy0VgovxkXdOl1/view?usp=drive_link',
+  },
+  {
+    id: 'rvMA8EZ5elxL7KH2chIt',
+    title: 'Rapat Koordinasi Perdana Pengurus Kabinet Narakarsa',
+    tag: 'Berita',
+    dateStr: '3 Agustus 2026',
+    desc: 'Seluruh pengurus Kabinet Narakarsa mengikuti rapat koordinasi perdana guna menyamakan visi, membagi tugas departemen, dan merancang program kerja semester ganjil 2026/2027.',
+    content: 'Usai resmi dilantik, DEMA FST langsung bergerak cepat dengan mengadakan Rapat Koordinasi (Rakor) Perdana bagi seluruh jajaran pengurus Kabinet NARAKARSA. Rapat yang dihadiri oleh pengurus harian dan seluruh anggota bidang ini berfokus pada penyamaan frekuensi, pemantapan Standar Operasional Prosedur (SOP) internal, serta pembahasan teknis pelaksanaan program kerja terdekat. Momen ini juga menjadi langkah awal untuk membangun soliditas tim dalam menghadapi tantangan organisasi selama satu periode kepengurusan.',
+    imageUrl: '/images/berita-2.jpg',
+    driveUrl: 'https://drive.google.com/file/d/1nkB71_j-leQm2kV9NTY88uU4r2BJLow-/view?usp=drive_link',
+  },
+  {
+    id: 'jFTcnAYe0rQRClWgXg6v',
+    title: 'Pelantikan Resmi Kabinet Narakarsa DEMA FST',
+    tag: 'Kegiatan',
+    dateStr: '2 Agustus 2026',
+    desc: 'Kabinet Narakarsa secara resmi dilantik pada 2 Agustus 2026 dalam sebuah upacara khidmat yang dihadiri oleh jajaran dekanat, dosen, dan mahasiswa FST.',
+    content: 'Babak baru kepemimpinan mahasiswa FST resmi dimulai. Pada 2 Agustus 2026, pengurus DEMA FST Kabinet NARAKARSA periode 2025/2026 resmi dilantik dalam sebuah seremoni yang khidmat. Acara ini dihadiri oleh jajaran Pimpinan Dekanat Fakultas Sains dan Teknologi, perwakilan dosen, SEMA FST, serta ketua dari masing-masing Himpunan Mahasiswa Jurusan (HMJ). Dalam sambutannya, Ketua Umum Ikhsan Nur Alam menegaskan komitmen kabinet untuk merestorasi marwah DEMA FST dan mengawal setiap kebijakan serta aspirasi mahasiswa secara independen dan profesional.',
+    imageUrl: '/images/berita-3.jpg',
+    driveUrl: 'https://drive.google.com/file/d/1vleeZBYiH93Z_Hd7-dYpVF5sFnBQaCEt/view?usp=drive_link',
+  },
+]
+
 /**
- * Ambil semua artikel, diurutkan dari terbaru
- * @param {number} limitCount - maksimal jumlah dokumen (default: 20)
+ * Format link Google Drive menjadi URL gambar yang dijamin bisa dirender di browser
+ * Menggunakan asset gambar lokal yang diunduh dari link Google Drive resmi.
+ * @param {string} url
+ * @param {number} fallbackIndex
  */
-export async function getUpdates(limitCount = 20) {
-  const q = query(
-    collection(db, COLLECTIONS.UPDATES),
-    orderBy('createdAt', 'desc'),
-    limit(limitCount)
-  )
-  const snapshot = await getDocs(q)
-  return snapshot.docs.map(d => ({ id: d.id, ...d.data() }))
+export function formatDriveImageUrl(url, fallbackIndex = 0) {
+  if (!url) {
+    const idx = (fallbackIndex % 3) + 1
+    return `/images/berita-${idx}.jpg`
+  }
+  if (url.includes('1uhxb5_lLV8RaxGPEaoqy0VgovxkXdOl1') || url.includes('berita-1')) {
+    return '/images/berita-1.jpg'
+  }
+  if (url.includes('1nkB71_j-leQm2kV9NTY88uU4r2BJLow-') || url.includes('berita-2')) {
+    return '/images/berita-2.jpg'
+  }
+  if (url.includes('1vleeZBYiH93Z_Hd7-dYpVF5sFnBQaCEt') || url.includes('berita-3')) {
+    return '/images/berita-3.jpg'
+  }
+  const driveMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/) || url.match(/\/d\/([a-zA-Z0-9_-]+)/)
+  if (driveMatch && driveMatch[1]) {
+    const id = driveMatch[1]
+    if (id === '1uhxb5_lLV8RaxGPEaoqy0VgovxkXdOl1') return '/images/berita-1.jpg'
+    if (id === '1nkB71_j-leQm2kV9NTY88uU4r2BJLow-') return '/images/berita-2.jpg'
+    if (id === '1vleeZBYiH93Z_Hd7-dYpVF5sFnBQaCEt') return '/images/berita-3.jpg'
+    return `https://lh3.googleusercontent.com/d/${id}`
+  }
+  return url
 }
 
 /**
- * Ambil satu artikel berdasarkan ID
+ * Memperkaya data artikel dengan draf resmi dan gambar Google Drive
+ * Mengutamakan pencocokan berdasarkan docId kemudian judul & indeks urutan.
+ */
+export function enrichUpdate(docData, index = 0) {
+  if (!docData) return null
+  const docId = docData.id || ''
+  const title = (docData.title || '').trim().toLowerCase()
+
+  let match = null
+  // 1. Cocokkan ID dokumen terlebih dahulu
+  if (docId === 'DxnsS3f6ZWTcBf5qLuhiL') {
+    match = DRAFT_UPDATES[0]
+  } else if (docId === 'rvMA8EZ5elxL7KH2chIt') {
+    match = DRAFT_UPDATES[1]
+  } else if (docId === 'jFTcnAYe0rQRClWgXg6v') {
+    match = DRAFT_UPDATES[2]
+  }
+  // 2. Cocokkan judul jika ID tidak terdaftar
+  else if (title.includes('sosialisasi')) {
+    match = DRAFT_UPDATES[0]
+  } else if (title.includes('pelantikan')) {
+    match = DRAFT_UPDATES[2]
+  } else if (title.includes('rapat koordinasi') || title.includes('rakor')) {
+    match = DRAFT_UPDATES[1]
+  } else {
+    // 3. Fallback berdasarkan indeks urutan berita yang ada
+    match = DRAFT_UPDATES[index % 3]
+  }
+
+  const hasLorem = (str) => typeof str === 'string' && /lorem\s+ipsum/i.test(str)
+
+  const finalImage = formatDriveImageUrl(docData.imageUrl || match.imageUrl, index)
+
+  return {
+    ...docData,
+    title: match ? match.title : docData.title,
+    tag: match ? match.tag : (docData.tag || 'Update'),
+    dateStr: match ? match.dateStr : (docData.dateStr || ''),
+    desc: (!docData.desc || hasLorem(docData.desc)) ? (match ? match.desc : docData.desc) : docData.desc,
+    content: (!docData.content || hasLorem(docData.content)) ? (match ? match.content : docData.content) : docData.content,
+    imageUrl: finalImage,
+  }
+}
+
+/**
+ * Ambil semua artikel dari Firestore (updates collection)
+ * Memperbaiki seluruh artikel yang ada agar memiliki gambar dan konten lengkap,
+ * tanpa menambahkan berita baru duplikat.
+ * @param {number} limitCount - maksimal jumlah dokumen (default: 20)
+ */
+export async function getUpdates(limitCount = 20) {
+  try {
+    const q = query(
+      collection(db, COLLECTIONS.UPDATES),
+      orderBy('createdAt', 'desc'),
+      limit(limitCount)
+    )
+    const snapshot = await getDocs(q)
+    if (!snapshot.empty) {
+      // Memperkaya setiap berita yang ada dari Firestore tanpa menambah berita baru
+      return snapshot.docs.map((d, idx) => enrichUpdate({ id: d.id, ...d.data() }, idx)).slice(0, limitCount)
+    }
+  } catch (err) {
+    console.warn('Menggunakan draft updates resmi:', err)
+  }
+  return DRAFT_UPDATES.slice(0, limitCount)
+}
+
+/**
+ * Ambil satu artikel berdasarkan ID dari Firestore
+ * Diperkaya dengan draf resmi dan gambar yang valid.
  * @param {string} id
  */
 export async function getUpdateById(id) {
-  const ref  = doc(db, COLLECTIONS.UPDATES, id)
-  const snap = await getDoc(ref)
-  if (!snap.exists()) return null
-  return { id: snap.id, ...snap.data() }
+  const predefined = DRAFT_UPDATES.find(u => u.id === id)
+  try {
+    const ref  = doc(db, COLLECTIONS.UPDATES, id)
+    const snap = await getDoc(ref)
+    if (snap.exists()) {
+      return enrichUpdate({ id: snap.id, ...snap.data() }, 0)
+    }
+  } catch (err) {
+    console.warn('Pencarian ID pada draft updates resmi:', err)
+  }
+  if (predefined) {
+    return predefined
+  }
+  return null
 }
 
 /**

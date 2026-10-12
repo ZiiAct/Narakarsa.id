@@ -97,5 +97,83 @@
   transition: gap var(--transition-fast);
 }
 
+/* ── Notice Banner (Redirect / Pengembangan) ── */
+.dupdate__notice-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  background: linear-gradient(135deg, rgba(230, 126, 34, 0.12) 0%, rgba(238, 207, 136, 0.18) 100%);
+  border: 1px solid rgba(230, 126, 34, 0.4);
+  border-left: 5px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.4rem;
+  margin-bottom: var(--space-2xl);
+  backdrop-filter: blur(8px);
+  animation: slideDownFade 0.35s ease forwards;
+}
+
+@keyframes slideDownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dupdate__notice-icon-box {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background: rgba(230, 126, 34, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dupdate__notice-icon {
+  font-size: 1.3rem;
+}
+
+.dupdate__notice-text-wrap {
+  flex: 1;
+}
+
+.dupdate__notice-heading {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #B95E05;
+  margin-bottom: 2px;
+}
+
+.dupdate__notice-body {
+  font-size: 0.96rem;
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.dupdate__notice-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.dupdate__notice-close-btn:hover {
+  color: var(--color-text);
+  background: rgba(0, 0, 0, 0.05);
+}
+
 .section { padding: var(--space-3xl) 0; }
 .section--alt { background: var(--color-bg-card); }
