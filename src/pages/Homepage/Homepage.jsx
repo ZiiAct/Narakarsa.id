@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import imgSaintek from '../../assets/saintek.webp'
 import imgWA0074 from '../../assets/IMG-20260802-WA0074.jpg'
-import { getUpdates } from '../../firebase/firestore'
+import { getUpdates, formatDriveImageUrl } from '../../firebase/firestore'
 import './Homepage.css'
 
 // ── Data ────────────────────────────────────────────────────
@@ -11,39 +11,45 @@ const layanan = [
     id: 1, icon: '♡',
     title: 'Aspirasi & Aduan',
     desc: 'Sampaikan masalah akademik, fasilitas, atau administrasi — bisa secara anonim.',
+    to: '/advokasi',
   },
   {
     id: 2, icon: '◇',
     title: 'Beasiswa & Kompetisi',
     desc: 'Kurasi beasiswa, lomba, magang, dan peluang volunteer terbaru untuk mahasiswa.',
+    to: '/d-update',
   },
   {
     id: 3, icon: '✦',
     title: 'Kemitraan',
     desc: 'Ajukan kerja sama, sponsorship, atau media partner bersama DEMA FST.',
+    to: '/kontak',
   },
   {
     id: 4, icon: '◈',
     title: 'Academic Bank',
     desc: 'Akses jurnal, buku, bahan ajar, dan artikel pengetahuan pilihan untuk mahasiswa FST.',
+    to: '/d-update?from=academic-bank',
   },
   {
     id: 5, icon: '✉',
     title: 'Kotak Anonim',
     desc: 'Sampaikan kritik & saran tanpa identitas — aman, langsung, dan ditindaklanjuti.',
+    to: '/advokasi',
   },
   {
     id: 6, icon: '◷',
     title: 'Kalender Kegiatan',
     desc: 'Agenda kabinet dan kegiatan mahasiswa FST — selalu terkini.',
+    to: '/d-update',
   },
 ]
 
 const misiItems = [
-  'Mengoptimalkan tata kelola internal DEMA FST Kabinet Narakarsa',
-  'Membangun ekosistem informasi yang transparan dan terbuka',
-  'Merekatkan elemen internal dan eksternal mahasiswa FST',
-  'Memastikan kesejahteraan mahasiswa yang inklusif dan merata',
+  'Mengelola arus informasi secara profesional, akurat, dan terpercaya sebagai corong utama DEMA FST.',
+  'Membangun ekosistem komunikasi sinergis antar-elemen kemahasiswaan dan fakultas melalui media digital independen.',
+  'Mengawal literasi digital, menangkal disinformasi, serta merespons isu strategis melalui publikasi edukatif berbasis data.',
+  'Mewadahi kreativitas dan inovasi media mahasiswa FST sebagai bentuk pengabdian dan penyatuan aspirasi.',
 ]
 
 
@@ -76,7 +82,7 @@ export default function Homepage() {
         <div className="hero__left">
           <div className="hero__eyebrow">
             <span className="hero__eyebrow-dot" />
-            Periode 2026/2027
+            Kabinet Narakarsa 2025/2026
           </div>
 
           <h1 className="hero__title">
@@ -102,8 +108,8 @@ export default function Homepage() {
 
           <div className="hero__stats" aria-label="Statistik kabinet">
             {[
-              { num: '8', label: 'Departemen Aktif' },
-              { num: '40+', label: 'Pengurus Terpilih' },
+              { num: '8', label: 'Bidang Kepengurusan' },
+              { num: '40', label: 'Pengurus Terpilih' },
               { num: '1000+', label: 'Mahasiswa Terlayani' },
             ].map(s => (
               <div key={s.label}>
@@ -128,7 +134,7 @@ export default function Homepage() {
         <div className="announce-strip__inner">
           <span className="announce-strip__badge">Terbaru</span>
           <p className="announce-strip__text">
-            Struktur Kabinet Narakarsa 2026/2027 telah resmi dilantik.
+            Struktur Kepengurusan Kabinet Narakarsa 2025/2026 telah resmi dilantik.
           </p>
           <Link to="/d-update" className="announce-strip__link">
             Selengkapnya →
@@ -146,7 +152,7 @@ export default function Homepage() {
               <img src={imgWA0074} alt="Kegiatan Kabinet Narakarsa" loading="lazy" />
               <div className="about__img-badge">
                 <div className="about__img-badge-title">Narakarsa</div>
-                <div className="about__img-badge-sub">DEMA FST — Kabinet 2026/2027</div>
+                <div className="about__img-badge-sub">DEMA FST — Kabinet 2025/2026</div>
               </div>
             </div>
 
@@ -159,8 +165,7 @@ export default function Homepage() {
               </h2>
 
               <blockquote className="about__visi">
-                "Mewujudkan DEMA FST sebagai pusat pelayanan, advokasi, dan pergerakan
-                mahasiswa yang responsif, transparan, dan berbasis data."
+                "Terwujudnya DEMA FST sebagai poros integrasi informasi dan komunikasi yang responsif, transparan, dan inovatif guna mendukung restorasi ekosistem intelektual, spiritual, dan kolektif bagi masyarakat Fakultas Sains dan Teknologi."
               </blockquote>
 
               <ul className="about__misi" aria-label="Misi kabinet">
@@ -198,13 +203,19 @@ export default function Homepage() {
 
           <div className="layanan__grid" role="list">
             {layanan.map(item => (
-              <div key={item.id} className="layanan__card" role="listitem">
+              <Link
+                key={item.id}
+                to={item.to}
+                className="layanan__card"
+                role="listitem"
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
                 <div className="layanan__card-icon" aria-hidden="true">
                   {item.icon}
                 </div>
                 <h3 className="layanan__card-title">{item.title}</h3>
                 <p className="layanan__card-desc">{item.desc}</p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -230,7 +241,7 @@ export default function Homepage() {
             ) : newsItems.length === 0 ? (
               <p style={{ color: 'var(--color-text-muted)', gridColumn: '1/-1' }}>Belum ada berita.</p>
             ) : (
-              newsItems.map(item => (
+              newsItems.map((item, idx) => (
                 <Link
                   key={item.id}
                   to={`/d-update/${item.id}`}
@@ -239,14 +250,17 @@ export default function Homepage() {
                   aria-label={item.title}
                   id={`home-news-${item.id}`}
                 >
-                  {item.imageUrl && (
-                    <img
-                      src={item.imageUrl}
-                      alt={item.title}
-                      className="updates__card-img"
-                      loading="lazy"
-                    />
-                  )}
+                  <img
+                    src={formatDriveImageUrl(item.imageUrl, idx)}
+                    alt={item.title}
+                    className="updates__card-img"
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      e.target.onerror = null
+                      e.target.src = `/images/berita-${(idx % 3) + 1}.jpg`
+                    }}
+                  />
                   <div className="updates__card-body">
                     <span className="updates__card-tag">{item.tag}</span>
                     <h3 className="updates__card-title">{item.title}</h3>

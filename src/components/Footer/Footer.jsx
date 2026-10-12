@@ -30,11 +30,11 @@ export default function Footer() {
             </div>
             <div className="footer__brand-name">
               <span className="footer__brand-line1">DEMA FST</span>
-              <span className="footer__brand-line2">Kabinet Narakarsa 2026/2027</span>
+              <span className="footer__brand-line2">Kabinet Narakarsa 2025/2026</span>
             </div>
             <p className="footer__brand-desc">
-              Pusat pelayanan, advokasi, dan pergerakan mahasiswa Fakultas Sains dan
-              Teknologi yang responsif, transparan, dan berbasis data.
+              Poros integrasi informasi, advokasi, dan pergerakan mahasiswa Fakultas Sains dan
+              Teknologi yang responsif, transparan, dan inovatif.
             </p>
           </div>
 
@@ -44,7 +44,13 @@ export default function Footer() {
             <ul className="footer__links" role="list">
               {navLinks.map(link => (
                 <li key={link.to}>
-                  <Link to={link.to} className="footer__link">{link.label}</Link>
+                  <Link
+                    to={link.to}
+                    state={link.to === '/academic-bank' ? { notice: 'Halaman ini masih dalam proses pengembangan.' } : undefined}
+                    className="footer__link"
+                  >
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>

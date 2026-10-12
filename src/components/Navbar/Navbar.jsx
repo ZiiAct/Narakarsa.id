@@ -45,6 +45,7 @@ export default function Navbar() {
             <li key={item.to}>
               <NavLink
                 to={item.to}
+                state={item.to === '/academic-bank' ? { notice: 'Halaman ini masih dalam proses pengembangan.' } : undefined}
                 end={item.to === '/'}
                 className={({ isActive }) => `navbar__link${isActive ? ' active' : ''}`}
               >
@@ -79,6 +80,7 @@ export default function Navbar() {
           <li key={item.to}>
             <NavLink
               to={item.to}
+              state={item.to === '/academic-bank' ? { notice: 'Halaman ini masih dalam proses pengembangan.' } : undefined}
               end={item.to === '/'}
               className={({ isActive }) => `navbar__link${isActive ? ' active' : ''}`}
               onClick={() => setMenuOpen(false)}
